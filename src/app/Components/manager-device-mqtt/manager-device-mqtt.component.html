@@ -1,0 +1,214 @@
+<div class="content-header" (mouseenter)="onMouseEnterClose()">
+    <div class="col-md-6">
+        <ul class="ulbutton" (click)="openmodaladdHub()">
+            <a class="abutton" title="Thêm" role="button">
+                Điều Khiển Thiết Bị
+                <i class="fas fa-plus"></i>
+            </a>
+        </ul>
+        <ul class="ulbutton" (click)="modalDevice.show()">
+            <a class="abutton" title="Thêm" role="button">
+                Thiết Bị
+                <i class="fas fa-plus"></i>
+            </a>
+        </ul>
+    </div>
+</div>
+<div class="content-center" (mouseenter)="onMouseEnterClose()">
+    <table class="table table-sm table-hover table-bordered" style="float: left;width:20%;height:86vh"
+        (mouseenter)="onMouseEnterClose()">
+        <thead style="background-color: #dbdbdb80;height: 55px;">
+            <tr class="row">
+                <div class="col-sm" style="height: 55px;padding: 0;">
+                    <label for="magroup" class="inp">
+                        <input type="text" id="magroup" placeholder="&nbsp;" [(ngModel)]="listFilter">
+                        <span class="label">Bộ Điều Khiển</span>
+                        <span class="border"></span>
+                    </label>
+                </div>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of gethub ;let i = index" class="row" style="padding: 10px;font-weight:bold"
+                (mouseenter)="onMouseEnter(item)">
+                <div class="col-sm" style="text-align: left;cursor: pointer;" (mouseenter)="onMouseEnter(item)"
+                    (click)="onSelectHub(item,i)">
+                    {{item.code_hub}}
+                </div>
+                <div class="chuc-nang-hub" *ngIf="item.edittable">
+                    <a class="btn" (click)="openEdit(item,i)">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </a>
+                    <a class="btn text-danger" style="margin-left: 5px;" (click)="openDelete(item)">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-hover table-bordered" style="float: right;width:79.8%;"
+        (mouseenter)="onMouseEnterClose()">
+        <thead>
+            <div class="row" style="background-color:#dbdbdb80;">
+                <div style="height: 55px;padding-top: 15px;font-weight:bold;">
+                    <p style="display: inline-table;">Danh Sách Thiết Bị</p>
+                </div>
+            </div>
+        </thead>
+        <tbody (mouseenter)="onMouseEnterClose()">
+            <div class="mblock" *ngFor="let item of getdevice ;let i = index;">
+                <div class="cblock"(mouseenter)="onMouseEnterDevice(item)">
+                  <img width="68" height="68" src="assets/door.png">
+                </div>
+                <div class="phong-ktx" (mouseenter)="onMouseEnterDevice(item)" >
+                  <div class="chi-tiet-phong">
+                    {{item.name_device}}
+                  </div>
+                  <div class="doi-tuong" >
+                    Phòng:
+                  </div>
+                  <div class="tinh-trang">
+                    <div class="con-trong" >
+                       Công Tắc: {{item.device_type}}
+                    </div>
+                    <div class="chuc-nang" *ngIf="item.edittable">
+                        <a class="btn" (click)="openEdit(item,i)">
+                            <i class="fa fa-pencil-square-o"></i>
+                          </a>
+                          <a class="btn text-danger" style="margin-left: 5px;" (click)="openDelete(item)">
+                            <i class="far fa-trash-alt"></i>
+                          </a>
+                      </div>
+                  </div>
+                 
+                </div>
+              </div>
+        </tbody>
+    </table>
+</div>
+<app-modal #modalRoot  [width]="800" [zIndex]="zIndex" [backgroundcolor]="'#007bff'"
+    [keydownesc]="true" [closemodal]="true" [maximizable]="false" [maximized]="false" [south]="false" [east]="false"
+    [southEast]="false">
+    <!-- <ng-container class="app-t-header">
+     
+    </ng-container> -->
+    <ng-container class="app-modal-body">
+        <form class="emp-form" [formGroup]="addHub" (ngSubmit)="onSubmitHub()">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input class="form-control form-control-sm" autocomplete="off" formControlName="code_hub"
+                        placeholder="Tên Bộ Điều Khiển">
+                </div>
+                <div class="form-group col-md-6">
+                    <input class="form-control form-control-sm" autocomplete="off" formControlName="room_name"
+                        placeholder="Phòng">
+                </div>
+            </div>
+            <div class="form-group">
+                <input class="form-control form-control-sm" autocomplete="off" formControlName="note"
+                    placeholder="Ghi chú">
+            </div>
+            <div class="form-group">
+                <select class="form-control form-control-sm" formControlName="status">
+                    <option value=null selected>--Trạng thái--</option>
+                    <option [ngValue]="true">Kích hoạt</option>
+                    <option [ngValue]="false">Khóa</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <button type="submit" class="btn btn-block btn-info btn-sm">
+                        <i class="fa fa-floppy-o"></i> Lưu</button>
+                </div>
+                <div class="form-group col-md-4">
+                    <button #buttonRefresh type="button" class="btn btn-block btn-secondary btn-sm" (click)="refresh()">
+                        <i class="fa fa-repeat"></i> Làm mới</button>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <ng-container class="app-modal-footer">
+        <input type="hidden" (click)="modalRoot.show()" id="modalRootShow">
+        <input type="hidden" (click)="modalRoot.hide()" id="modalRootClose">
+    </ng-container>
+</app-modal>
+<app-modal #modalDelete [modalTitle]="'Bạn có muốn xóa không !'" [width]="400" [zIndex]="zIndex" [backgroundcolor]="'#007bff'" [keydownesc]="true" [closemodal]="false" [maximizable]="false" [maximized]="false" [south]="false" [east]="false" [southEast]="false">
+    <ng-container class="app-t-header">
+    </ng-container>
+    <ng-container class="app-modal-body">
+      <div class="form-row">
+        <div class="form-group">{{selecthub.code_hub}}</div>
+      </div>
+    </ng-container>
+    <ng-container class="app-modal-footer">
+      <button type="button" (click)="onDeleteHub(selecthub.id)" style="width: 75px;" class="btn btn-info btn-sm">
+        <i class="far fa-save tu"></i>
+        Xóa</button>
+      <button type="button" class="btn btn-info btn-sm" style="float: right;" (click)="modalDelete.hide()">
+        <i class="far fa-times-circle"></i>
+        Thoát</button>
+        <input type="hidden" (click)="modalDelete.show()" id="modalDelete">
+        <input type="hidden" (click)="modalDelete.hide()" id="modalDeleteHide">
+    </ng-container>
+  </app-modal>
+  <app-modal #modalDevice  [width]="800" [zIndex]="zIndex" [backgroundcolor]="'#007bff'"
+    [keydownesc]="true" [closemodal]="true" [maximizable]="false" [maximized]="false" [south]="false" [east]="false"
+    [southEast]="false">
+    <!-- <ng-container class="app-t-header">
+     
+    </ng-container> -->
+    <ng-container class="app-modal-body">
+        <form class="emp-form" [formGroup]="addDevice" (ngSubmit)="onSubmitDevice()">
+            <div class="form-group">
+                <select class="form-control form-control-sm" (change)="onEventHubCode($event.target.value)">
+                    <option value="null" selected>--Tên Bộ Điều Khiển--</option>
+                    <option *ngFor="let item of gethub" value="{{item.id}}#{{item.code_hub}}">{{item.code_hub}}</option>
+              </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input class="form-control form-control-sm" autocomplete="off" formControlName="name_device"
+                        placeholder="Tên Thiết Bị">
+                </div>
+                <div class="form-group col-md-4">
+                    <input class="form-control form-control-sm" [attr.disabled]="true"  autocomplete="off" formControlName="code_device"
+                        placeholder="ID_Device">
+                </div>
+                <div class="form-group col-md-4">
+                    <input class="form-control form-control-sm" [attr.disabled]="true"  autocomplete="off" formControlName="device_type"
+                        placeholder="device_type">
+                </div>
+            </div>
+            <div class="form-group">
+                <input class="form-control form-control-sm" autocomplete="off" formControlName="icon"
+                    placeholder="icon">
+            </div>
+            <div class="form-group">
+                <input class="form-control form-control-sm" autocomplete="off" formControlName="note"
+                    placeholder="Ghi chú">
+            </div>
+                <div class="form-group">
+                    <select class="form-control form-control-sm" formControlName="status">
+                        <option value=null selected>--Trạng thái--</option>
+                        <option [ngValue]="true">Kích hoạt</option>
+                        <option [ngValue]="false">Khóa</option>
+                    </select>
+                </div>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <button type="submit" class="btn btn-block btn-info btn-sm">
+                        <i class="fa fa-floppy-o"></i> Lưu</button>
+                </div>
+                <div class="form-group col-md-4">
+                    <button #buttonRefresh type="button" class="btn btn-block btn-secondary btn-sm" (click)="refreshDevice()">
+                        <i class="fa fa-repeat"></i> Làm mới</button>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <ng-container class="app-modal-footer">
+        <input type="hidden" (click)="modalDevice.show()" id="modalDeviceShow">
+        <input type="hidden" (click)="modalDevice.hide()" id="modalDeviceClose">
+    </ng-container>
+</app-modal>
+  <app-toaster-container></app-toaster-container>
