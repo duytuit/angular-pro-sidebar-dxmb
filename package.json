@@ -27,7 +27,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^3.3.3",
     "font-awesome": "^4.7.0",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "malihu-custom-scrollbar-plugin": "^3.1.5",
     "ngx-malihu-scrollbar": "^9.0.0",
     "oidc-client": "^1.9.1",
